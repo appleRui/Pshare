@@ -38,7 +38,6 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     // DOC:https://nuxtjs.org/ja/docs/configuration-glossary/configuration-css/
-    'bulma',
     '@/assets/css/main.scss'
   ],
 
