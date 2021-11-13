@@ -86,7 +86,7 @@ export default {
       });
     },
     googleLogin() {
-      console.log("GoogleLogin")
+      this.$store.dispatch("googleLogin")
     },
   },
 };
