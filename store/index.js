@@ -4,7 +4,8 @@ export const state = () => ({
   user: {
     uid: '',
     email: '',
-    displayName: ''
+    displayName: '',
+    avatarIcon: ''
   }
 })
 
@@ -14,6 +15,7 @@ export const mutations = {
     state.user.uid = user.uid
     state.user.email = user.email
     state.user.displayName = user.displayName
+    state.user.avatarIcon = user.photoURL
   },
 }
 
@@ -31,6 +33,22 @@ export const actions = {
         this.$router.push('/')
       })
       .catch((e) => {
+        alert("Error:" + e.code + "：" + e.message)
+      })
+  },
+  googleLogin({
+    commit
+  }) {
+    var provider = new firebase.auth.GoogleAuthProvider()
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log("Func:googleLogin")
+        commit('setActiveUser', result.user)
+        alert("Success Login!");
+        this.$router.push('/')
+      }).catch((e) => {
         alert("Error:" + e.code + "：" + e.message)
       })
   },
