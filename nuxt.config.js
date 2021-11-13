@@ -38,17 +38,37 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     // DOC:https://nuxtjs.org/ja/docs/configuration-glossary/configuration-css/
-    '@/assets/css/main.scss'
+    // '@/assets/css/main.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: [
+    {
+      path: '@/components/',
+      pathPrefix: false
+    }
+  ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: [
+    '@nuxtjs/vuetify',
+  ],
+
+  vuetify: {
+    // Doc: https://vuetifyjs.com/ja/customization/a-la-carte/
+    treeShake: true,
+    customVariables: ['~/assets/scss/main.scss'],
+    theme: {
+      themes: {
+        light: {
+          primary: '#e75a5e',
+        }
+      }
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
