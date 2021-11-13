@@ -13,9 +13,23 @@
       <div class="px-6 py-8">
         <div style="max-width: 344px" class="mx-auto">
           <div>
-            <shop-form-email />
-            <shop-form-password />
-            <form-login-btn />
+            <user-form-email :email.sync="params.user.email" />
+            <user-form-password
+              :password.sync="params.user.password"
+              :passwordShow.sync="params.user.passwordShow"
+            />
+            <div class="login-btn pb-3">
+              <v-btn
+                color="primary"
+                class="fill-width caption"
+                depressed
+                height="48px"
+                tile
+                @click="login"
+              >
+                ログイン
+              </v-btn>
+            </div>
           </div>
 
           <div class="separator separator_login_page">
@@ -28,6 +42,7 @@
               outlined
               style="border-color: #979797"
               tile
+              @click="googleLogin"
             >
               <img
                 class="button-logo-img mr-4"
@@ -51,15 +66,28 @@
 </template>
 
 <script>
-
 export default {
   layout: "auth",
   data() {
     return {
-      email: null,
-      password: null,
-      passwordShow: false,
+      params: {
+        user: {
+          email: "",
+          password: "",
+        },
+      },
     };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("emailAndPasswordLogin", {
+        email: this.params.user.email,
+        password: this.params.user.password,
+      });
+    },
+    googleLogin() {
+      console.log("GoogleLogin")
+    },
   },
 };
 </script>

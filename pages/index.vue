@@ -1,7 +1,34 @@
 <template>
-  <Tutorial/>
+  <v-app id="inspire">
+    <v-navigation-drawer app>
+      <v-sheet color="grey lighten-4" class="pa-4">
+        <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
+
+        <div>{{ this.$store.state.user.email }}</div>
+      </v-sheet>
+
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-item @click="logout">
+          <v-list-item-content>
+            <v-list-item-title>ログアウト</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </v-app>
 </template>
 
 <script>
-export default {}
+export default {
+  data: () => ({}),
+  middleware: "auth",
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
+  },
+  created() {},
+};
 </script>
