@@ -27,14 +27,17 @@ export default {
   middleware: "auth",
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      let res = confirm("ログアウトしますか？");
+      if (res) {
+        this.$store.dispatch("logout");
+      }
     },
   },
   computed: {
     avatarIconURL: function () {
-      return this.$store.state.user.avatarIcon
-    }
- },
+      return this.$store.state.user.avatarIcon;
+    },
+  },
   created() {},
 };
 </script>
