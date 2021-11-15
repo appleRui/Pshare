@@ -1,4 +1,5 @@
 import firebase from '~/plugins/firebase'
+const db = firebase.firestore()
 
 export const state = () => ({
   user: {
@@ -6,7 +7,8 @@ export const state = () => ({
     email: '',
     displayName: '',
     avatarIcon: ''
-  }
+  },
+  evetns: []
 })
 
 export const mutations = {
@@ -64,7 +66,14 @@ export const actions = {
       .catch((e) => {
         alert("Error:" + e.code + "：" + e.message)
       })
-  }
+  },
+  sendStore(context, payload) {
+    const evetnColle = db.collection('events')
+    evetnColle.add(payload)
+      .then((res) => {
+        console.log("ColID:" + res.id);
+      })
+  },
 }
 
 
