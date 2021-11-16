@@ -13,15 +13,12 @@ export const state = () => ({
 
 export const mutations = {
   setActiveUser(state, user) {
-    console.log("Func:setActiveUser")
     state.user.uid = user.uid
     state.user.email = user.email
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
   },
   pushEvents(state, event) {
-    console.log("Func:pushEvents");
-    console.log(event.data())
     state.events.push(event.data());
   },
 }
@@ -64,7 +61,6 @@ export const actions = {
       .auth()
       .signOut()
       .then(() => {
-        console.log("Func:logout")
         alert('Success Logout!')
         this.$router.push('login')
       })
@@ -75,14 +71,10 @@ export const actions = {
   sendStore(context, payload) {
     const evetnColle = db.collection('events')
     evetnColle.add(payload)
-      .then((res) => {
-        console.log("ColID:" + res.id);
-      })
   },
   async getEvents({
     commit
   }) {
-    console.log("Func:getEvents");
     const querySnapshot = await db.collection('events').get()
     querySnapshot.forEach((event) => {
       commit("pushEvents", event)

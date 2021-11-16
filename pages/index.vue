@@ -62,7 +62,6 @@ export default {
       this.dialog = !this.dialog;
     },
     sendStore() {
-      console.log("Func:sendStore");
       this.$store.dispatch("sendStore", this.newEvent);
       this.dailogStateChange();
     },
