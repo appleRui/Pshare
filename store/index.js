@@ -18,8 +18,8 @@ export const mutations = {
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
   },
-  pushEvents(state, event) {
-    state.events.push(event.data());
+  pushEvent(state, event) {
+    state.events.push(event);
   },
 }
 
@@ -68,16 +68,19 @@ export const actions = {
         alert("Error:" + e.code + "：" + e.message)
       })
   },
-  sendStore(context, payload) {
+  sendStore({
+    commit
+  }, payload) {
     const evetnColle = db.collection('events')
     evetnColle.add(payload)
+    commit("pushEvent", payload)
   },
   async getEvents({
     commit
   }) {
     const querySnapshot = await db.collection('events').get()
     querySnapshot.forEach((event) => {
-      commit("pushEvents", event)
+      commit("pushEvent", event.data())
     })
   }
 }
