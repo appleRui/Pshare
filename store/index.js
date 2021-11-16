@@ -8,7 +8,7 @@ export const state = () => ({
     displayName: '',
     avatarIcon: ''
   },
-  evetns: []
+  events: []
 })
 
 export const mutations = {
@@ -18,6 +18,11 @@ export const mutations = {
     state.user.email = user.email
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
+  },
+  pushEvents(state, event) {
+    console.log("Func:pushEvents");
+    console.log(event.data())
+    state.events.push(event.data());
   },
 }
 
@@ -74,7 +79,15 @@ export const actions = {
         console.log("ColID:" + res.id);
       })
   },
+  async getEvents({
+    commit
+  }) {
+    console.log("Func:getEvents");
+    const querySnapshot = await db.collection('events').get()
+    querySnapshot.forEach((event) => {
+      commit("pushEvents", event)
+    })
+  }
 }
-
 
 export const getters = {}

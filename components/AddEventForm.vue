@@ -2,7 +2,7 @@
   <v-dialog
     v-model="this.dialog"
     scrollable
-    max-width="60%"
+    max-width="50%"
     @click:outside="dailogStateChange"
   >
     <v-card>
@@ -22,43 +22,6 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field
-                v-model="setNewEvent.firstName"
-                :counter="8"
-                label="セイ"
-                required
-                outlined
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="setNewEvent.lastName"
-                :counter="8"
-                label="メイ"
-                required
-                outlined
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="setNewEvent.email"
-                label="メールアドレス"
-                outlined
-                placeholder="example@test.com"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="setNewEvent.phoneNumber"
-                label="電話番号"
-                required
-                outlined
-                placeholder="XXXYYYYZZZ"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
               <v-menu
                 ref="menu"
                 :close-on-content-click="false"
@@ -68,7 +31,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="setNewEvent.date"
+                    v-model="setNewEvent.shooting_date"
                     label="日付"
                     prepend-icon="mdi-calendar"
                     readonly
@@ -77,7 +40,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="setNewEvent.date"
+                  v-model="setNewEvent.shooting_date"
                   :max="
                     new Date(
                       Date.now() - new Date().getTimezoneOffset() * 60000

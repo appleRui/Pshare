@@ -12,34 +12,24 @@
     <v-main>
       <v-container class="py-8 px-6" fluid>
         <v-row>
-          <v-col v-for="card in cards" :key="card" cols="12">
-            <v-card>
-              <v-subheader>{{ card }}</v-subheader>
-
-              <v-list two-line>
-                <template v-for="n in 6">
-                  <v-list-item :key="n">
-                    <v-list-item-avatar color="grey darken-1">
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Message {{ n }}</v-list-item-title>
-
-                      <v-list-item-subtitle>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Nihil repellendus distinctio similique
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider
-                    v-if="n !== 6"
-                    :key="`divider-${n}`"
-                    inset
-                  ></v-divider>
-                </template>
-              </v-list>
-            </v-card>
+          <h1 class="mt-5">イベント一覧</h1>
+          <v-col cols="12">
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">イベント名</th>
+                    <th class="text-left">撮影日</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="event in getEvent" :key="event">
+                    <td>{{ event.eventName }}</td>
+                    <td>{{ event.shooting_date }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
           </v-col>
         </v-row>
       </v-container>
@@ -61,13 +51,9 @@ export default {
     cards: ["Today"],
     dialog: false,
     newEvent: {
-      eventName: "eventName",
-      firstName: "firstName",
-      lastName: "lastName",
-      email: "email",
-      phoneNumber: "phoneNumber",
-      date: "2021-11-15",
-      note: "note",
+      eventName: "",
+      shooting_date: "",
+      note: "",
     },
   }),
   middleware: "auth",
@@ -78,10 +64,16 @@ export default {
     sendStore() {
       console.log("Func:sendStore");
       this.$store.dispatch("sendStore", this.newEvent);
+      this.dailogStateChange();
     },
   },
   created() {
-      this.$store.dispatch("getEvents");
-  }
+    this.$store.dispatch("getEvents");
+  },
+  computed: {
+    getEvent() {
+      return this.$store.state.events;
+    },
+  },
 };
 </script>
