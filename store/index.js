@@ -18,10 +18,10 @@ export const mutations = {
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
   },
-  pushEvent(state, event) {
-    state.events.push(event);
+  pushEvent(state, data) {
+    state.events.push(data);
   },
-  ResetEvents(state){
+  ResetEventsArray(state) {
     state.events = []
   }
 }
@@ -76,9 +76,12 @@ export const actions = {
   }, payload) {
     const evetnColle = db.collection('events')
     evetnColle.add(payload)
-    .then((event) => {
-      commit("pushEvent", payload)
-    })
+      .then((event) => {
+        commit("pushEvent", {
+          uid: event.id,
+          data: payload
+        })
+      })
   },
   async getEvents({
     commit
@@ -86,7 +89,10 @@ export const actions = {
     const querySnapshot = await db.collection('events').get()
     commit("ResetEventsArray")
     querySnapshot.forEach((event) => {
-      commit("pushEvent", event.data())
+      commit("pushEvent", {
+        uid: event.id,
+        data: event.data()
+      })
     })
   }
 }
