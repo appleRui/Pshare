@@ -20,12 +20,24 @@
                   <tr>
                     <th class="text-left">イベント名</th>
                     <th class="text-left">撮影日</th>
+                    <th class="text-left">操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="event in getEvent" :key="event">
                     <td>{{ event.eventName }}</td>
                     <td>{{ event.shooting_date }}</td>
+                    <td>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-qrcode</v-icon>
+                      </v-btn>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-cloud-upload</v-icon>
+                      </v-btn>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
                   </tr>
                 </tbody>
               </template>
