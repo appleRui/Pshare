@@ -1,43 +1,90 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer app>
-      <v-sheet color="grey lighten-4" class="pa-4">
-        <v-avatar class="mb-4" color="grey darken-1" size="64"
-          ><img :src="avatarIconURL" alt=""
-        /></v-avatar>
-        <div>{{ this.$store.state.user.email }}</div>
-      </v-sheet>
-
+      <user-card />
       <v-divider></v-divider>
-
-      <v-list>
-        <v-list-item @click="logout">
-          <v-list-item-content>
-            <v-list-item-title>ログアウト</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <side-item-list
+        :dialog="this.dialog"
+        @dailogStateChange="dailogStateChange"
+      />
     </v-navigation-drawer>
+
+    <v-main>
+      <v-container class="py-8 px-6" fluid>
+        <v-row>
+          <h1 class="mt-5">イベント一覧</h1>
+          <v-col cols="12">
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">イベント名</th>
+                    <th class="text-left">撮影日</th>
+                    <th class="text-left">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="event in getEvent" :key="event">
+                    <td>{{ event.eventName }}</td>
+                    <td>{{ event.shooting_date }}</td>
+                    <td>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-qrcode</v-icon>
+                      </v-btn>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-cloud-upload</v-icon>
+                      </v-btn>
+                      <v-btn class="ma-2" outlined color="gray">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-col>
+        </v-row>
+      </v-container>
+      <add-event-form
+        :dialog="this.dialog"
+        @dailogStateChange="dailogStateChange"
+        :newEvent.sync="this.newEvent"
+        @sendStore="sendStore"
+      />
+    </v-main>
   </v-app>
 </template>
 
 <script>
+import AddEventForm from "~/components/AddEventForm.vue";
 export default {
-  data: () => ({}),
+  components: { AddEventForm },
+  data: () => ({
+    cards: ["Today"],
+    dialog: false,
+    newEvent: {
+      eventName: "",
+      shooting_date: "",
+      note: "",
+    },
+  }),
   middleware: "auth",
   methods: {
-    logout() {
-      let res = confirm("ログアウトしますか？");
-      if (res) {
-        this.$store.dispatch("logout");
-      }
+    dailogStateChange() {
+      this.dialog = !this.dialog;
     },
+    sendStore() {
+      this.$store.dispatch("sendStore", this.newEvent);
+      this.dailogStateChange();
+    },
+  },
+  created() {
+    this.$store.dispatch("getEvents");
   },
   computed: {
-    avatarIconURL: function () {
-      return this.$store.state.user.avatarIcon;
+    getEvent() {
+      return this.$store.state.events;
     },
   },
-  created() {},
 };
 </script>

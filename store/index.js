@@ -1,4 +1,5 @@
 import firebase from '~/plugins/firebase'
+const db = firebase.firestore()
 
 export const state = () => ({
   user: {
@@ -6,17 +7,23 @@ export const state = () => ({
     email: '',
     displayName: '',
     avatarIcon: ''
-  }
+  },
+  events: []
 })
 
 export const mutations = {
   setActiveUser(state, user) {
-    console.log("Func:setActiveUser")
     state.user.uid = user.uid
     state.user.email = user.email
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
   },
+  pushEvent(state, event) {
+    state.events.push(event);
+  },
+  ResetEvents(state){
+    state.events = []
+  }
 }
 
 export const actions = {
@@ -57,15 +64,31 @@ export const actions = {
       .auth()
       .signOut()
       .then(() => {
-        console.log("Func:logout")
         alert('Success Logout!')
         this.$router.push('login')
       })
       .catch((e) => {
         alert("Error:" + e.code + "：" + e.message)
       })
+  },
+  sendStore({
+    commit
+  }, payload) {
+    const evetnColle = db.collection('events')
+    evetnColle.add(payload)
+    .then((event) => {
+      commit("pushEvent", payload)
+    })
+  },
+  async getEvents({
+    commit
+  }) {
+    const querySnapshot = await db.collection('events').get()
+    commit("ResetEventsArray")
+    querySnapshot.forEach((event) => {
+      commit("pushEvent", event.data())
+    })
   }
 }
-
 
 export const getters = {}

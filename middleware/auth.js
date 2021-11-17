@@ -7,7 +7,6 @@ export default function ({
     if (!user) {
       redirect('/login')
     }
-    console.log(user);
     store.commit('setActiveUser', user)
   })
 }
