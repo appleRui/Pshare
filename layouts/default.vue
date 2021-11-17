@@ -21,7 +21,7 @@ export default {
       note: "",
     },
   }),
-  middleware: 'auth',
+  middleware: "auth",
   methods: {
     dailogStateChange() {
       this.dialog = !this.dialog;
@@ -29,6 +29,7 @@ export default {
     sendStore() {
       this.$store.dispatch("sendStore", this.newEvent);
       this.dailogStateChange();
+      this.$router.push("/");
     },
   },
 };
