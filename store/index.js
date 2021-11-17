@@ -21,6 +21,9 @@ export const mutations = {
   pushEvent(state, event) {
     state.events.push(event);
   },
+  ResetEvents(state){
+    state.events = []
+  }
 }
 
 export const actions = {
@@ -73,12 +76,15 @@ export const actions = {
   }, payload) {
     const evetnColle = db.collection('events')
     evetnColle.add(payload)
-    commit("pushEvent", payload)
+    .then((event) => {
+      commit("pushEvent", payload)
+    })
   },
   async getEvents({
     commit
   }) {
     const querySnapshot = await db.collection('events').get()
+    commit("ResetEventsArray")
     querySnapshot.forEach((event) => {
       commit("pushEvent", event.data())
     })
