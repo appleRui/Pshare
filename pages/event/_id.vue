@@ -1,13 +1,26 @@
 <template>
   <v-main>
     <v-container class="py-8 px-6" fluid>
-      <p>{{ this.$route.params.id }}のドキュメントページ</p>
+      <h1>{{ this.event.eventName }}</h1>
     </v-container>
   </v-main>
 </template>
 
 <script>
-export default {};
+import firebase from "~/plugins/firebase";
+const db = firebase.firestore();
+
+export default {
+  data: () => ({
+    event: [],
+  }),
+  created() {
+    const current_event = db.collection('events').doc(this.$route.params.id)
+    current_event.get().then((res) => {
+      this.event = res.data();
+    })
+  },
+};
 </script>
 
 <style>
