@@ -9,6 +9,7 @@
               <thead>
                 <tr>
                   <th class="text-left">イベント名</th>
+                  <th class="text-left">イベントID</th>
                   <th class="text-left">撮影日</th>
                   <th class="text-left">操作</th>
                 </tr>
@@ -16,6 +17,7 @@
               <tbody>
                 <tr v-for="event in getEvent" :key="event.uid">
                   <td>{{ event.data.eventName }}</td>
+                  <td>{{ event.uid }}</td>
                   <td>{{ event.data.shooting_date }}</td>
                   <td>
                     <v-btn
@@ -25,12 +27,17 @@
                       color="gray"
                       nuxt
                     >
-                      <v-icon>mdi-qrcode</v-icon>
+                      <v-icon>mdi-numeric</v-icon>
                     </v-btn>
                     <v-btn class="ma-2" outlined color="gray">
                       <v-icon>mdi-cloud-upload</v-icon>
                     </v-btn>
-                    <v-btn class="ma-2" outlined color="gray">
+                    <v-btn
+                      class="ma-2"
+                      outlined
+                      color="gray"
+                      @click="deleteEvent(event.uid)"
+                    >
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
                   </td>
@@ -46,6 +53,7 @@
 
 <script>
 import AddEventForm from "~/components/AddEventForm.vue";
+
 export default {
   components: { AddEventForm },
   data: () => ({
@@ -63,6 +71,13 @@ export default {
     sendStore() {
       this.$store.dispatch("sendStore", this.newEvent);
       this.dailogStateChange();
+    },
+    deleteEvent(uid) {
+      let res = confirm("本当に削除しますか？");
+      if(res){
+        this.$store.dispatch("deleteEvent", uid)
+        this.$store.dispatch("getEvents");
+      }
     },
   },
   created() {

@@ -94,6 +94,9 @@ export const actions = {
         data: event.data()
       })
     })
+  },
+  deleteEvent(context, payload){
+    db.collection('events').doc(payload).delete()
   }
 }
 
