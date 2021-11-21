@@ -97,7 +97,12 @@ export const actions = {
   },
   deleteEvent(context, payload){
     db.collection('events').doc(payload).delete()
-  }
+  },
+  createAccessCode(context, payload){
+    const dt = new Date();
+    dt.setMonth(dt.getMonth()+3)
+    const data = db.collection('accessCodes').doc().set({WatchingPeriod: dt, event: payload.event});
+  },
 }
 
 export const getters = {}
