@@ -29,7 +29,7 @@
                     >
                       <v-icon>mdi-numeric</v-icon>
                     </v-btn>
-                    <v-btn class="ma-2" outlined color="gray">
+                    <v-btn :to="`event/${event.uid}/upload`" class="ma-2" outlined color="gray">
                       <v-icon>mdi-cloud-upload</v-icon>
                     </v-btn>
                     <v-btn
