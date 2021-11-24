@@ -57,35 +57,40 @@ import AddEventForm from "~/components/AddEventForm.vue";
 export default {
   components: { AddEventForm },
   data: () => ({
-    cards: ["Today"],
     newEvent: {
       eventName: "",
       shooting_date: "",
       note: "",
     },
+    events: []
   }),
   methods: {
     dailogStateChange() {
       this.dialog = !this.dialog;
     },
     sendStore() {
-      this.$store.dispatch("sendStore", this.newEvent);
+      this.$store.dispatch("event/sendStore", this.newEvent);
       this.dailogStateChange();
+      this.newEvent = {
+        eventName: "",
+        shooting_date: "",
+        note: "",
+      };
     },
     deleteEvent(uid) {
       let res = confirm("本当に削除しますか？");
-      if(res){
-        this.$store.dispatch("deleteEvent", uid)
-        this.$store.dispatch("getEvents");
+      if (res) {
+        this.$store.dispatch("event/deleteEvent", uid);
+        this.$store.dispatch("event/getEvents");
       }
     },
   },
   created() {
-    this.$store.dispatch("getEvents");
+    this.$store.dispatch("event/getEvents");
   },
   computed: {
     getEvent() {
-      return this.$store.state.events;
+      return this.$store.state.event.events;
     },
   },
 };
