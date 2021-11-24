@@ -8,7 +8,6 @@ export const state = () => ({
     displayName: '',
     avatarIcon: ''
   },
-  events: []
 })
 
 export const mutations = {
@@ -18,12 +17,6 @@ export const mutations = {
     state.user.displayName = user.displayName
     state.user.avatarIcon = user.photoURL
   },
-  pushEvent(state, event) {
-    state.events.push(event);
-  },
-  ResetEvents(state){
-    state.events = []
-  }
 }
 
 export const actions = {
@@ -34,7 +27,6 @@ export const actions = {
       .auth()
       .signInWithEmailAndPassword(payload.email.toLowerCase(), payload.password.toLowerCase())
       .then((result) => {
-        console.log("Func:emailAndPasswordLogin")
         commit('setActiveUser', result.user)
         alert("Success Login!");
         this.$router.push('/')
@@ -51,7 +43,6 @@ export const actions = {
       .auth()
       .signInWithPopup(provider)
       .then((result) => {
-        console.log("Func:googleLogin")
         commit('setActiveUser', result.user)
         alert("Success Login!");
         this.$router.push('/')
@@ -71,24 +62,6 @@ export const actions = {
         alert("Error:" + e.code + "：" + e.message)
       })
   },
-  sendStore({
-    commit
-  }, payload) {
-    const evetnColle = db.collection('events')
-    evetnColle.add(payload)
-    .then((event) => {
-      commit("pushEvent", payload)
-    })
-  },
-  async getEvents({
-    commit
-  }) {
-    const querySnapshot = await db.collection('events').get()
-    commit("ResetEventsArray")
-    querySnapshot.forEach((event) => {
-      commit("pushEvent", event.data())
-    })
-  }
 }
 
 export const getters = {}
