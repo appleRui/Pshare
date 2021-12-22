@@ -13,7 +13,8 @@
 export default {
   props: {
     dialog: {
-      type: Boolean
+      type: Boolean,
+      default: false,
     }
   },
   methods: {
