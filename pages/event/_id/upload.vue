@@ -34,16 +34,14 @@
           <v-card
             class="mx-auto card"
             max-width="280"
-            v-for="res in sources"
-            :src="res.url"
-            alt=""
+            v-for="(res, index) in sources"
             :key="res.name"
           >
             <v-img :src="res.url" height="200px"></v-img>
-            <v-card-title>{{ res.name }}</v-card-title>
+            <v-card-text>{{ res.name }}</v-card-text>
             <v-card-actions>
-              <v-btn rounded plain @click="destoryimage(res.name)"
-                ><v-icon>mdi-delete</v-icon></v-btn
+              <v-btn rounded plain @click="destoryimage(sources, res, index)"
+                >削除</v-btn
               >
             </v-card-actions>
           </v-card>
@@ -53,14 +51,15 @@
       <v-dialog v-model="processDialog" persistent max-width="320">
         <v-card>
           <v-card-title class="text-h6">
-            追加する写真はありますか？
+            アップロードが完了しました
           </v-card-title>
+          <v-card-text>追加する写真はありますか？</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="addImages(false)">
+            <v-btn color="green darken-1" text @click="hasAddImages(false)">
               いいえ
             </v-btn>
-            <v-btn color="green darken-1" text @click="addImages(true)">
+            <v-btn color="green darken-1" text @click="hasAddImages(true)">
               はい
             </v-btn>
           </v-card-actions>
@@ -146,20 +145,23 @@ export default {
     };
   },
   methods: {
-    addImages(bol) {
+    hasAddImages(bol) {
       if (bol) {
         this.processDialog = false;
       } else {
         location.reload(false);
       }
     },
-    destoryimage(file) {
+    destoryimage(sources, file, idx) {
       let bol = confirm("本当に削除しますか？");
       if (bol) {
         storage
           .ref()
-          .child(this.$route.params.id + "/" + file)
-          .delete();
+          .child(this.$route.params.id + "/" + file.name)
+          .delete()
+          .then((res) => {
+            sources.splice(idx, 1);
+          });
       }
     },
   },
@@ -168,7 +170,6 @@ export default {
       this.processDialog = true;
     });
   },
-  created() {},
 };
 </script>
 <style lang="scss" scoped>
